@@ -16,22 +16,6 @@ database_blueprint = Blueprint('database', __name__, url_prefix='/database')
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def process_file(filepath, filename):
-    # Example processing: create a new file with '_processed' suffix
-    processed_filename = filename.rsplit('.', 1)[0] + '.pdf'
-    processed_filepath = os.path.join(DOWNLOAD_FOLDER, processed_filename)
-
-
-    result_analysis()
-
-    with open(filepath, 'r') as input_file:
-        with open(processed_filepath, 'w') as output_file:
-            for line in input_file:
-                # Example processing: just copy the content (you can replace with actual processing logic)
-                output_file.write(line)
-
-    return processed_filename
-
 def get_saved_filename(original_filename):
     # Replace this with your actual logic for determining the saved filename
     return secure_filename(original_filename)
