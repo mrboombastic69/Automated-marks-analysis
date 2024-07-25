@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from config import UPLOAD_FOLDER, DOWNLOAD_FOLDER, ALLOWED_EXTENSIONS
 from flask import Blueprint, jsonify, request
 from database import File, get_files, add_file  # Adjust import as needed
+from excel_dosa import result_analysis
 
 from logger import general_logger
 
@@ -19,6 +20,9 @@ def process_file(filepath, filename):
     # Example processing: create a new file with '_processed' suffix
     processed_filename = filename.rsplit('.', 1)[0] + '.pdf'
     processed_filepath = os.path.join(DOWNLOAD_FOLDER, processed_filename)
+
+
+    result_analysis()
 
     with open(filepath, 'r') as input_file:
         with open(processed_filepath, 'w') as output_file:
@@ -49,13 +53,13 @@ def upload_file():
         general_logger.info(f"File {original_filename} successfully uploaded as {saved_filename}")
 
         # Process the file
-        processed_filename = process_file(filepath, saved_filename)
+        processed_filename = result_analysis(filepath, DOWNLOAD_FOLDER)
         general_logger.info(f"File {saved_filename} successfully processed to {processed_filename}")
 
         # Store New File in DB
         full_path = os.path.join(filepath, processed_filename)
         if os.path.exists(full_path):
-            add_file(processed_filename, datetime.now(), 'CSE')
+           add_file(processed_filename, datetime.now(), 'CSE')
         return jsonify({'message': 'File successfully uploaded and processed', 'processed_file': processed_filename}), 201
 
     return jsonify({'error': 'File type not allowed'}), 400
@@ -83,7 +87,7 @@ def view_history():
             'id': file.id,
             'name': file.name,
             'created_on': file.created_on.isoformat(),
-            'department': file.department.name,
+            'department': file.department_code,
             'file_url': url_for('files.download_file', filename=file.name, _external=True)
         }
         for file in file_page.items
