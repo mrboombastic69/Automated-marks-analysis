@@ -20,7 +20,7 @@ UPLOAD_URL = 'http://127.0.0.1:5000/files/upload'
 DOWNLOAD_URL = 'http://127.0.0.1:5000/files/download/'
 
 # Local file to upload
-local_file_path = 'test_file.txt'
+local_file_path = 'data.xlsx'
 
 # Upload a file
 def upload_file(file_path):
