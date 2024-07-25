@@ -10,9 +10,9 @@ Setup:
 #    1. install all the dependencies from requirements.txt
 
         `pip install -r requirements.txt`
-#    2. go to:
+#    2. go to api folder:
  
-        `cd mini-project/backend/api/app.py`
+        `cd mini-project/backend/api/`
 #    3. Run app.py
  
         `python app.py`
