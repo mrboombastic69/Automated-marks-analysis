@@ -1,1 +1,5 @@
 *.pyc
+mini-project/backend/api/log/*
+mini-project/backend/api/instance/*
+mini-project/backend/api/downloads/*
+mini-project/backend/api/uploads/*
