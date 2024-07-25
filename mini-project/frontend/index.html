@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8">
+    <title>DOSA: Digitaly Optimized Subject wise Analysis</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./analyze-style.css">
+    <link rel="stylesheet" href="./history-style.css">
+
+
+  </head>
+  <body>
+    <nav class="menu" tabindex="0">
+      <div class="smartphone-menu-trigger"></div>
+      <header class="avatar">
+        <img src="images/vemana-logo.jpeg" />
+        <h2>Vemana Institute of Technology</h2>
+      </header>
+      <ul>
+        <li tabindex="0" class="icon-dashboard" id="analyze-btn"><span>Analyze</span></li>
+        <li tabindex="0" class="icon-customers" id="history-btn"><span>History</span></li>
+        <li tabindex="0" class="icon-settings" id="settings-btn"><span>Settings</span></li>
+      </ul>
+    </nav>
+
+    <main>
+      <div id="analyze-content">
+          <div class="container" id="upload-container">
+            <div class="file-upload">
+                <input type="file" id="file-input" />
+                <label for="file-input">Choose Files or Drag and Drop</label>
+                <div class="file-status" id="file-status">No file chosen</div>
+            </div>
+            <a id="download-btn" class="download-btn" href="#" download>Download Processed File</a>
+          </div>
+      </div>
+      <div id="history-content">
+        <h1>File History</h1>
+          <table>
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Created On</th>
+                      <th>Department</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody id="file-table-body">
+                  <!-- File rows will be inserted here -->
+              </tbody>
+          </table>
+          <div id="pagination">
+              <!-- Pagination links will be inserted here -->
+          </div>
+          <script src="history-script.js"></script>
+      </div>
+      <div id="settings-content">
+        <p>Settings</p>
+      </div>
+    </main>
+    <script  src="./script.js"></script>
+  </body>
+</html>

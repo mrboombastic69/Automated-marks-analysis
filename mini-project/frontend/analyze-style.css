@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+}
+.container.dragging {
+    border-color: #333;
+}
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.file-upload input[type="file"] {
+    display: none;
+}
+.file-upload label {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.file-status {
+    margin-top: 20px;
+    font-size: 16px;
+    color: black;
+}
+.download-btn {
+    display: none;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}

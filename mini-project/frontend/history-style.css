@@ -1,0 +1,51 @@
+#history-content {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#history-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#history-content th, #history-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#history-content th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#pagination-controls button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+#pagination-controls button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+#pagination-controls span {
+    font-weight: bold;
+}
