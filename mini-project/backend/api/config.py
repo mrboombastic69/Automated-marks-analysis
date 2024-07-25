@@ -2,7 +2,7 @@ import os
 
 UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'xlsx', 'pdf'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB
 SQLALCHEMY_DATABASE_URI = 'sqlite:///DOSA.db'
 
