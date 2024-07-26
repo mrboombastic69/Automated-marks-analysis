@@ -1,49 +1,45 @@
-import os
 import re
+import io
+import os
 from openpyxl import load_workbook
 from reportlab.lib.pagesizes import landscape, A4
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Image
 from reportlab.platypus import Spacer
-
+from reportlab.lib.units import inch
 class ResultAnalysis:
-
     def __init__(self, filename, start_row=8):
         self.workbook = load_workbook(filename=filename, data_only=True)
         self.sheet = self.workbook.active
         self.start_row = start_row
         self.subjects = {}
-
+        self.sem = None
+        self.year = None
+        self.month = None
         # Define regex patterns for headings and subheadings
         self.heading_pattern = re.compile(r'^\d{2}[A-Za-z]{2,4}\d{2,3}$')
         self.subheading_pattern = re.compile(r'^(int|ext|tot)$', re.IGNORECASE)
-
     def extract_data(self):
         current_subject = None
         subheading_values = None
-
         for row in self.sheet.iter_rows(min_row=self.start_row, max_row=self.sheet.max_row):
             for cell in row:
                 if cell.value is not None:
                     cell_value = str(cell.value).strip()
-
                     # Check if the cell value matches the heading pattern
                     if self.heading_pattern.match(cell_value):
                         current_subject = cell_value
                         self.subjects[current_subject] = {'int': [], 'ext': [], 'tot': []}
-
                         # Get the merged cell range
                         merged_range = None
                         for merged in self.sheet.merged_cells.ranges:
                             if cell.coordinate in merged:
                                 merged_range = merged
                                 break
-
                         if merged_range:
                             subheading_row = merged_range.min_row + 1
                             subheading_cols = range(merged_range.min_col, merged_range.max_col + 1)
-
                             # Extract the subheading values (int, ext, tot)
                             subheading_values = {}
                             for col in subheading_cols:
@@ -51,7 +47,6 @@ class ResultAnalysis:
                                 sub_cell_value = str(sub_cell.value).strip().lower()
                                 if self.subheading_pattern.match(sub_cell_value):
                                     subheading_values[sub_cell_value] = col
-
                             # Iterate through the rows under the subheading to extract marks
                             for data_row in self.sheet.iter_rows(min_row=subheading_row + 1, max_row=self.sheet.max_row):
                                 for subheading, col in subheading_values.items():
@@ -61,17 +56,14 @@ class ResultAnalysis:
 
     def analyze(self, range_fcd=(75, 100), range_fc=(60, 74), range_sc=(35, 59), range_fail=(0, 34)):
         result = {}
-
         # Iterate through each subject
         for subject, sub_marks in self.subjects.items():
             n_fcd = 0
             n_fc = 0
             n_sc = 0
             n_fail = 0
-
             # Get the total marks
             tot_marks = sub_marks['tot']
-
             # Iterate through each total mark and classify
             for mark in tot_marks:
                 if range_fcd[0] <= mark <= range_fcd[1]:
@@ -82,7 +74,6 @@ class ResultAnalysis:
                     n_sc += 1
                 elif range_fail[0] <= mark <= range_fail[1]:
                     n_fail += 1
-
             # Store the result for the current subject
             result[subject] = {
                 'n_fcd': n_fcd,
@@ -90,7 +81,6 @@ class ResultAnalysis:
                 'n_sc': n_sc,
                 'n_fail': n_fail
             }
-
         return result
     def extract_exam_info(self):
         # Initialize the dictionary to store the extracted info
@@ -119,28 +109,37 @@ class ResultAnalysis:
                         exam_info['sem'] = parts[1].strip()
 
         return exam_info
-
-    
-    def create_pdf_report(self, result, filename='report.pdf'):
+    def create_pdf_report(self, result, filename='result_report.pdf'):
         # Create a PDF document
-        pdf = SimpleDocTemplate(filename, pagesize=landscape(A4), rightMargin=1, leftMargin=1,topMargin=1, bottomMargin=1)
+        pdf = SimpleDocTemplate(filename, pagesize=landscape(A4), rightMargin=36, leftMargin=36, topMargin=0, bottomMargin=0)
+        story = []
 
-        # Define the styles
-        styles = getSampleStyleSheet()
-        title_style = styles['Title']
-        title_style.fontName = 'Times-Roman'
-        title_style.fontSize = 28
-        title_style.alignment = 1  # Center alignment
+        # Extract and save image from Excel sheet
+        excel_image = None
+        for image in self.sheet._images:
+            excel_image = image
+            break  # Assuming you want the first image
 
-        subtitle_style = styles['Heading2']
-        subtitle_style.fontName = 'Times-Roman'
-        subtitle_style.fontSize = 24
-        subtitle_style.alignment = 1  # Center alignment
+        if excel_image:
+            # Extract image data from Excel image
+            image_stream = io.BytesIO(excel_image._data())
 
-        # Create the title and subtitle
-        title = Paragraph("Vemana Institute of Technology", title_style)
-        subtitle = Paragraph("Department of Computer Science & Engineering", subtitle_style)
+            # Save image to file
+            image_path = 'extracted_image.png'
+            with open(image_path, 'wb') as f:
+                f.write(image_stream.getvalue())
 
+            # Add image to PDF
+            pdf_image = Image(image_path, width=pdf.width - 72, height=100)  # Adjusted height
+            story.append(pdf_image)
+            story.append(Spacer(1, 12))
+
+        # Include extracted examination information
+        exam_info = self.extract_exam_info()
+        exam_style = ParagraphStyle(name='ExamInfoStyle', fontName='Times-Bold', fontSize=16, spaceAfter=14)
+        exam_paragraph = Paragraph(f"EXAMINATION MONTH & YEAR: {exam_info['month']} {exam_info['year']}<br/><br/>SEMESTER: {exam_info['sem']}", exam_style)
+        story.append(exam_paragraph)
+        story.append(Spacer(1, 24))
         # Create the table data
         table_data = [['Subject', 'FCD', 'FC', 'SC', 'Fail']]
         for subject, counts in result.items():
@@ -148,23 +147,32 @@ class ResultAnalysis:
             table_data.append(row)
 
         # Create the table
-        table = Table(table_data)
+        table = Table(table_data, colWidths=[pdf.width/5]*5)
         table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.white),
-            ('FONTSIZE', (0, 0), (-1, 0), 40),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, -1), 'Times-Roman'),
-            ('FONTSIZE', (0, 0), (-1, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 18),  # Larger text for header
+            ('FONTSIZE', (0, 1), (-1, -1), 16),  # Larger text for body
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),  # Increase cell height
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ]))
+        story.append(table)
+        story.append(Spacer(1, 24))
 
-        # Build the PDF
-        
-        pdf.build([title, subtitle,Spacer(1,20), table])
+        # Signature
+        signature_style = getSampleStyleSheet()['Normal']
+        signature_style.fontName = 'Times-Bold'
+        signature_style.fontSize = 20
+        signature = Paragraph('Head of Department<br/><br/>Dr Ramakrishna M', signature_style)
+        story.append(Spacer(1, 50))  # Spacer for positioning
+        story.append(signature)
 
+        pdf.build(story)
+
+        # Delete the image file after the report is generated
+        if os.path.exists(image_path):
+            os.remove(image_path)
 
 def result_analysis(infile, outfile_path):
     processor = ResultAnalysis(filename=infile)
@@ -177,5 +185,4 @@ def result_analysis(infile, outfile_path):
     result = processor.analyze()
     processor.create_pdf_report(result, outfile)
 
-    return fname    
-    
+    return fname 
