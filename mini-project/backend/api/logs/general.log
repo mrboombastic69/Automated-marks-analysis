@@ -1,0 +1,46 @@
+2024-07-26 11:57:19,384 - general - INFO - Handling request to /files/upload
+2024-07-26 11:57:19,391 - general - INFO - File sem_2.xlsx successfully uploaded as sem_2.xlsx
+2024-07-26 11:57:19,928 - general - INFO - File sem_2.xlsx successfully processed to SEM-2-September-2022.pdf
+2024-07-26 11:57:19,928 - general - INFO - Completed request to /files/upload with status 201
+2024-07-26 11:57:21,383 - general - INFO - Handling request to /files/download/SEM-2-September-2022.pdf
+2024-07-26 11:57:21,383 - general - INFO - File SEM-2-September-2022.pdf successfully downloaded
+2024-07-26 11:57:21,411 - general - INFO - Completed request to /files/download/SEM-2-September-2022.pdf with status 200
+2024-07-26 11:57:29,284 - general - INFO - Handling request to /database/history
+2024-07-26 11:57:29,323 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 11:57:33,795 - general - INFO - Handling request to /database/history
+2024-07-26 11:57:33,799 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 11:58:20,732 - general - INFO - Handling request to /database/history
+2024-07-26 11:58:20,737 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 11:59:04,550 - general - INFO - Handling request to /database/history
+2024-07-26 11:59:04,557 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 11:59:04,668 - general - INFO - Handling request to /favicon.ico
+2024-07-26 11:59:04,669 - general - INFO - Completed request to /favicon.ico with status 404
+2024-07-26 11:59:07,738 - general - INFO - Handling request to /database/history
+2024-07-26 11:59:07,742 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 11:59:07,779 - general - INFO - Handling request to /favicon.ico
+2024-07-26 11:59:07,780 - general - INFO - Completed request to /favicon.ico with status 404
+2024-07-26 12:02:08,827 - general - INFO - Handling request to /files/upload
+2024-07-26 12:02:08,835 - general - INFO - File data.xlsx successfully uploaded as data.xlsx
+2024-07-26 12:02:09,041 - general - INFO - File data.xlsx successfully processed to SEM-1-April-2022.pdf
+2024-07-26 12:02:09,041 - general - INFO - Completed request to /files/upload with status 201
+2024-07-26 12:02:09,057 - general - INFO - Handling request to /files/download/SEM-1-April-2022.pdf
+2024-07-26 12:02:09,057 - general - INFO - File SEM-1-April-2022.pdf successfully downloaded
+2024-07-26 12:02:09,113 - general - INFO - Completed request to /files/download/SEM-1-April-2022.pdf with status 200
+2024-07-26 12:06:55,233 - general - INFO - Handling request to /database/history
+2024-07-26 12:06:55,241 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 12:07:29,730 - general - INFO - Handling request to /files/upload
+2024-07-26 12:07:29,737 - general - INFO - File data.xlsx successfully uploaded as data.xlsx
+2024-07-26 12:07:30,221 - general - INFO - File data.xlsx successfully processed to SEM-1-April-2022.pdf
+2024-07-26 12:07:30,222 - general - INFO - Completed request to /files/upload with status 201
+2024-07-26 12:07:44,660 - general - INFO - Handling request to /files/download/SEM-1-April-2022.pdf
+2024-07-26 12:07:44,660 - general - INFO - File SEM-1-April-2022.pdf successfully downloaded
+2024-07-26 12:07:44,686 - general - INFO - Completed request to /files/download/SEM-1-April-2022.pdf with status 200
+2024-07-26 12:08:37,184 - general - INFO - Handling request to /database/history
+2024-07-26 12:08:37,192 - general - INFO - Completed request to /database/history with status 200
+2024-07-26 12:08:44,787 - general - INFO - Handling request to /files/upload
+2024-07-26 12:08:44,787 - general - INFO - File data.xlsx successfully uploaded as data.xlsx
+2024-07-26 12:08:45,196 - general - INFO - File data.xlsx successfully processed to SEM-1-April-2022.pdf
+2024-07-26 12:08:45,196 - general - INFO - Completed request to /files/upload with status 201
+2024-07-26 12:08:52,379 - general - INFO - Handling request to /files/download/SEM-1-April-2022.pdf
+2024-07-26 12:08:52,380 - general - INFO - File SEM-1-April-2022.pdf successfully downloaded
+2024-07-26 12:08:52,400 - general - INFO - Completed request to /files/download/SEM-1-April-2022.pdf with status 200
